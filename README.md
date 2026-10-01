@@ -1,8 +1,10 @@
 # Fil rouge — Introduction au DevOps
 
-Petite API Node 24. C’est **la seule application** des 3 jours : Git, GitHub Actions, Docker, Kubernetes, Terraform local.
+Petite API Node 24. C'est l'application des 3 jours : Git, GitHub Actions, Docker, Kubernetes, Terraform local.
 
-Ce dépôt ne contient pas les anciennes démos (Java, Next.js, Python). Elles ne font pas partie du parcours.
+Le dossier `java/` est une petite app Java : on construit son image au module Docker. La CI, Compose et Kubernetes restent sur l'API Node.
+
+Ce dépôt ne contient pas les anciennes démos (Next.js, Python, ni `lab/apps/java-demo`). Elles ne font pas partie du parcours.
 
 ```bash
 git clone https://github.com/JSurquin/devops-fil-rouge.git
@@ -27,9 +29,20 @@ npm start
 docker compose up --build
 ```
 
+## Docker (Java)
+
+Même geste que l'API Node, depuis `java/` :
+
+```bash
+cd java
+docker build -t fil-rouge-java:1.0.0 .
+docker run -d --name fil-rouge-java -p 8080:8080 fil-rouge-java:1.0.0
+# http://127.0.0.1:8080/health
+```
+
 ## Kubernetes (kind ou minikube)
 
-Chargez d’abord l’image dans le cluster (`kind load docker-image fil-rouge-api:1.0.0` ou `minikube image load`).
+Chargez d'abord l'image dans le cluster (`kind load docker-image fil-rouge-api:1.0.0` ou `minikube image load`).
 
 ```bash
 kubectl apply -f k8s/
@@ -49,12 +62,13 @@ terraform destroy
 
 ## CI
 
-Le workflow `.github/workflows/ci.yml` vit à la racine : les tests tournent dans `app/`, le `docker build` se lance ici (là où est le Dockerfile).
+Le workflow `.github/workflows/ci.yml` vit à la racine : les tests tournent dans `app/`, le `docker build` se lance ici (là où est le Dockerfile de l'API Node).
 
 ## Contenu
 
-- `app/` — l’API Express et ses tests
-- `Dockerfile` / `docker-compose.yml` — image et Compose
+- `app/` — l'API Express et ses tests
+- `Dockerfile` / `docker-compose.yml` — image et Compose de l'API Node
+- `java/` — petite app Java et son Dockerfile (image Docker)
 - `.github/workflows/ci.yml` — pipeline GitHub Actions
 - `k8s/` — Namespace, Deployment, Service
 - `terraform/` — démo locale, sans cloud
