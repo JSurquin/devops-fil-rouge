@@ -1,0 +1,9 @@
+app/node_modules
+app/package-lock.json
+.env
+.env.*
+*.log
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/.terraform.lock.hcl

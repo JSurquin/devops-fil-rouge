@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fil-rouge-api
+  namespace: fil-rouge
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fil-rouge-api
+  template:
+    metadata:
+      labels:
+        app: fil-rouge-api
+    spec:
+      containers:
+        - name: api
+          image: fil-rouge-api:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
